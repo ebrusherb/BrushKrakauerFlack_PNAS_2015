@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2009.11.7)  22 MAY 2015 11:28
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2009.11.7)  30 JUN 2015 13:29
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**BrushKrakauerFlack_PNASformatted_05_20_15.tex
-(./BrushKrakauerFlack_PNASformatted_05_20_15.tex
+**BrushKrakauerFlack_PNASformatted_06_30_15.tex
+(./BrushKrakauerFlack_PNASformatted_06_30_15.tex
 LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
 yphenation, german-x-2009-06-19, ngerman-x-2009-06-19, ancientgreek, ibycus, ar
@@ -283,8 +283,8 @@ Package: natbib 2009/07/16 8.31 (PWD, AO)
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count126
 )
-(./BrushKrakauerFlack_PNASformatted_05_20_15.aux)
-\openout1 = `BrushKrakauerFlack_PNASformatted_05_20_15.aux'.
+(./BrushKrakauerFlack_PNASformatted_06_30_15.aux)
+\openout1 = `BrushKrakauerFlack_PNASformatted_06_30_15.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
 LaTeX Font Info:    ... okay on input line 27.
@@ -336,63 +336,56 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 ) [1{/usr/local/texlive/2009/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-Overfull \hbox (5.1437pt too wide) in paragraph at lines 77--77
+Overfull \hbox (5.1437pt too wide) in paragraph at lines 79--79
 [] 
  []
 
-[2] [3]
-
-LaTeX Warning: Reference `best metric' on page 4 undefined on input line 162.
-
-[4] [5] (./BrushKrakauerFlack_PNASformatted_05_20_15.bbl) [6]
-<Figure1.pdf, id=35, 493.845pt x 123.46124pt>
+[2] [3] [4] [5] (./BrushKrakauerFlack_PNASformatted_06_30_15.bbl) [6]
+<Figure1.pdf, id=34, 493.845pt x 123.46124pt>
 File: Figure1.pdf Graphic file (type pdf)
  <use Figure1.pdf>
-<Figure2.pdf, id=36, 493.845pt x 123.46124pt>
+<Figure2.pdf, id=35, 493.845pt x 123.46124pt>
 File: Figure2.pdf Graphic file (type pdf)
  <use Figure2.pdf>
-<Figure3.pdf, id=37, 245.91875pt x 184.69pt>
+<Figure3.pdf, id=36, 245.91875pt x 184.69pt>
 File: Figure3.pdf Graphic file (type pdf)
  <use Figure3.pdf>
-<Figure4.pdf, id=38, 245.91875pt x 184.69pt>
+<Figure4.pdf, id=37, 245.91875pt x 184.69pt>
 File: Figure4.pdf Graphic file (type pdf)
  <use Figure4.pdf>
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [7 <./Figure1.pdf> <./Figure2.pdf>] [8 <./Figure3.pdf> <./Figure4.pdf>]
-[9] (./BrushKrakauerFlack_PNASformatted_05_20_15.aux)
-
-LaTeX Warning: There were undefined references.
-
- ) 
+[9] (./BrushKrakauerFlack_PNASformatted_06_30_15.aux) ) 
 Here is how much of TeX's memory you used:
- 3593 strings out of 493848
- 45526 string characters out of 3149207
- 131118 words of memory out of 3000000
- 6817 multiletter control sequences out of 15000+200000
+ 3581 strings out of 493848
+ 45292 string characters out of 3149207
+ 130056 words of memory out of 3000000
+ 6805 multiletter control sequences out of 15000+200000
  15320 words of font info for 56 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 48i,13n,37p,1818b,264s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb>
-</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.p
-fb></usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb
-></usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><
-/usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
-sr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr
-/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/lo
-cal/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local
-/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/te
-xlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/tex
-live/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/te
-xlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/local/te
-xlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texl
-ive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texliv
-e/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/
-2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/20
-09/texmf-dist/fonts/type1/public/amsfonts/latxfont/lcircle1.pfb>
-Output written on BrushKrakauerFlack_PNASformatted_05_20_15.pdf (9 pages, 27033
-0 bytes).
+ 48i,13n,37p,1671b,260s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/local/texlive/2009
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2009/t
+exmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/local/texlive/200
+9/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2009/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2009/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2009/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2009/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2009/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2009/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2009/texmf-dist/font
+s/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2009/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2009/texmf-dist/font
+s/type1/public/amsfonts/cm/cmssi10.pfb></usr/local/texlive/2009/texmf-dist/font
+s/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2009/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2009/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2009/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/
+public/amsfonts/latxfont/lcircle1.pfb>
+Output written on BrushKrakauerFlack_PNASformatted_06_30_15.pdf (9 pages, 26916
+9 bytes).
 PDF statistics:
  117 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

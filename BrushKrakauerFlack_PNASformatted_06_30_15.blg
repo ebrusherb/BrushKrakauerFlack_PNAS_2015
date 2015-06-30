@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (TeX Live 2009)
+The top-level auxiliary file: BrushKrakauerFlack_PNASformatted_06_30_15.aux
+The style file: plain.bst
+Database file #1: signaling_model.bib
+You've used 13 entries,
+            2118 wiz_defined-function locations,
+            591 strings with 6443 characters,
+and the built_in function-call counts, 4283 in all, are:
+= -- 405
+> -- 227
+< -- 0
++ -- 93
+- -- 76
+* -- 345
+:= -- 754
+add.period$ -- 39
+call.type$ -- 13
+change.case$ -- 75
+chr.to.int$ -- 0
+cite$ -- 13
+duplicate$ -- 141
+empty$ -- 313
+format.name$ -- 76
+if$ -- 859
+int.to.chr$ -- 0
+int.to.str$ -- 13
+missing$ -- 12
+newline$ -- 68
+num.names$ -- 27
+pop$ -- 56
+preamble$ -- 1
+purify$ -- 64
+quote$ -- 0
+skip$ -- 92
+stack$ -- 0
+substring$ -- 262
+swap$ -- 13
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 50
+warning$ -- 0
+while$ -- 36
+width$ -- 15
+write$ -- 145
