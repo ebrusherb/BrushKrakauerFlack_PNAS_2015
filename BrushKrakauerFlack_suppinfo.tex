@@ -1,0 +1,378 @@
+\documentclass{article}
+\usepackage{latexsym}
+\usepackage{amssymb,amsmath,amsfonts}
+\usepackage{custom2}
+\usepackage{graphicx} 
+\usepackage{epstopdf} 
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{url}
+\usepackage[all,arc]{xy}
+\usepackage{enumerate}
+\usepackage{mathrsfs}
+\usepackage{booktabs}
+\usepackage[pdftex]{hyperref}
+\usepackage{lscape}
+\usepackage{xcolor}
+\usepackage{natbib}
+\usepackage{tabularx}
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+\captionsetup{justification=RaggedRight, singlelinecheck=false}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\newcommand{\argmax}{\text{argmax}}
+\newcommand{\Tr}{\text{Tr}}
+\newcommand{\mb}{\mathbf}
+\newtheorem{ass}{Assumption}
+
+\addtolength{\evensidemargin}{-.5in}
+\addtolength{\oddsidemargin}{-.5in}
+\addtolength{\textwidth}{1.4in}
+\addtolength{\textheight}{1.4in}
+\addtolength{\topmargin}{-.5in}
+
+\renewcommand{\thefigure}{S\arabic{figure}}
+%\setcounter{figure}{0}  
+
+\pagestyle{empty}
+
+\title{Conflict and Strategy in Collective Computation}
+\author{Eleanor Brush, David Krakauer, Jessica Flack}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+%\appendix
+\section*{Supplementary Information}
+\renewcommand{\thesubsection}{\Alph{subsection}.}
+\renewcommand{\thesubsubsection}{\thesubsection \arabic{subsubsection}}
+%\renewcommand{\thetheorem}{\thesubsection .\arabic{theorem}}
+\renewcommand{\thetheorem}{\arabic{theorem}}
+
+\subsection{Sequential Probability Ratio Test }
+The sequential probability ratio test (SPRT) is the optimal way to decide between two alternatives in a noisy environment, in the sense that, for a given decision time, the SPRT is the most accurate algorithm and, for a given error rate, the SPRT reaches a decision most quickly \cite{Bogacz:2006uq,Froment:2010fk}.  The SPRT is mathematically equivalent to the LIM when the leak rate $\ell=0$. The LIM has the advantage over the SPRT of describing a more realistic leaky decision process and of being analytically tractable.  While the SPRT has been applied to animal conflicts  \cite{Froment:2010fk}, to our knowledge the leaky integrator model has not been.
+
+\subsection{Derivation of PDEs for decision time, error rate, and probability of reaching decision preference \label{pdes_deriv}}
+The derivation below follows closely that given in \cite{Gardiner:2009fk}, which provides more details.
+We will assume we have a set of stochastic differential equation written as
+\begin{equation}
+d{\mathbf x} ={\mb A}({\mb x},t)dt+{\mb B}({\mb x},t)d{\mb W}(t), \label{sde}
+\end{equation}
+where ${\mb x}\in\R^N$, $A:\R^N\times \R\to\R^N$, ${\mb B}:\R^N\times\R\to\R^N\times\R^N$, and $d{\mb W}(t)$ is an $N$ variable Weiner process. The forward equation describing the probability density $p({\mb x},t|{\mb y},s)$ is 
+%% i'm trying to be consistent about my noise terms: I'll try to always use B*B^T even though Gardiner seems to switch back and forth between B and B*^T
+\begin{equation}
+\frac{\partial p}{\partial t} =-\sum_{i=1}^N\frac{\partial \big(A_i({\mb x},t)p\big)}{\partial x_i}+\frac{1}{2}\sum_{i,j=1}^N\frac{\partial^2\big([{\mb B}({\mb x},t){\mb B}^T({\mb x},t)]_{ij}p\big)}{\partial x_i\partial x_j} \label{forward}
+\end{equation}
+and the backward equation is 
+\begin{equation}
+-\frac{\partial p}{\partial s}=\sum_{i=1}^NA_i({\mb y},s)\frac{\partial p}{\partial y_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y},s){\mb B}^T({\mb y},s)]_{ij}\frac{\partial^2 p}{\partial y_i\partial y_j}. \label{backward}
+\end{equation}
+
+\subsubsection{Decision time }
+%(section 5.5 the Fokker-Planck Equation, First Passage Times for Homogeneous Processes in Gardiner) 
+Let $G({\mathbf y},t)$ be the probability that the particle is still in the region $R$ at time $t$ given that it started at ${\mathbf y}$ so that $$G({\mathbf y},t)=\int_Rp({\mathbf x},t|{\mathbf y},0)d{\mathbf x}.$$  
+
+\begin{claim} If the system is time homogeneous,
+\begin{equation}
+\frac{\partial G}{\partial t}=\sum_{i=1}^NA_i({\mb y})\frac{\partial G}{\partial y_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y}){\mb B}^T({\mb y})]_{ij}\frac{\partial^2 G}{\partial y_i\partial y_j}. \label{Geq}
+\end{equation}
+%%Gardiner has a 2 instead of 1/2 in Section 6.6 but that must be a typo
+\end{claim}
+\begin{pf}
+If the system is time homogeneous, then $p({\mb x},t|{\mb y},0)=p({\mb x},0|{\mb y},-t)$ so that we can rewrite $G$ as 
+\begin{align*}
+G({\mb y},t)&=\int_Rp({\mb x},0|{\mb y},-t)d{\mb x},
+\\ \text{ which gives that } \frac{\partial G}{\partial t}\bigg|_{t=t}&=\int_R\frac{\partial p({\mb x},0|{\mb y},-t)}{\partial t}\bigg|_{t=t}d{\mb x}
+\\&=\int_R -\frac{\partial p({\mb x},0|{\mb y},s)}{\partial s}\bigg|_{s=t} d{\mb x}
+\\&=\int_R\bigg(\sum_{i=1}^NA_i({\mb y})\frac{\partial p}{\partial y_{i}}\bigg|_{s=t}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y}){\mb B}^T({\mb y})]_{ij}\frac{\partial^2 p}{\partial y_{i}\partial y_{j}}\bigg|_{s=t}\bigg) d{\mb x} \text{ using (\ref{backward})}
+\\&=\sum_{i=1}^NA_i({\mb y})\bigg(\int_R\frac{\partial p}{\partial y_{i}}\bigg|_{s=t}d{\mb x}\bigg)+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y}){\mb B}^T({\mb y})]_{ij}\bigg(\int_R\frac{\partial^2 p}{\partial y_{i}\partial y_{j}}\bigg|_{s=t}\bigg) d{\mb x}
+\\&=\sum_{i=1}^NA_i({\mb y})\frac{\partial G}{\partial y_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y}){\mb B}^T({\mb y})]_{ij}\frac{\partial^2 G}{\partial y_i\partial y_j}
+\end{align*}
+\end{pf}
+
+We can now use Equation (\ref{Geq}) to find an equation that the expected hitting time satisfies. If $T$ is the time at which the particle hits the boundary $S=\partial R$, then $P(T\geq t|{\mb y})=G({\mathbf y},t)$.  Therefore
+\begin{align*}
+E_{{\mathbf y}}(T) &=\int_0^\infty t P(T\in[t,t+dt)|{\mathbf y})
+\\&= \int_0^\infty t \bigg(P(T\geq t|{\mathbf y})-P(T\geq t+dt|{\mathbf y})\bigg) 
+\\&=\int_0^\infty t \bigg(G({\mathbf y},t)-G({\mathbf y},t+dt)\bigg)
+\\&=\int_0^\infty t \frac{G({\mathbf y},t)-G({\mathbf y},t+dt)}{dt}dt
+\\&=-\int_0^\infty t\frac{\partial G}{\partial t}dt
+\\&=-\bigg(\big[tG({\mathbf y},t)\big]_0^{\infty}-\int_0^\infty G({\mathbf y},t)dt\bigg)  \text{ by integration by parts }
+\\&=\int_0^\infty G({\mathbf y},t)dt \text{ if $\lim_{t\to \infty}G({\mathbf y},t)=0$ quickly enough}.
+\end{align*}
+
+If we let $f({\mathbf y})=E_{\mathbf y}(T)$, then 
+\begin{align*}
+\sum_{i=1}^NA_i({\mb y},t)\frac{\partial f}{\partial y_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y},t){\mb B}^T({\mb y},t)]_{ij}\frac{\partial^2 f}{\partial y_i\partial y_j}&=\int_0^\infty\bigg(\sum_{i=1}^NA_i({\mb y},t)\frac{\partial G}{\partial y_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y},t){\mb B}^T({\mb y},t)]_{ij}\frac{\partial^2 G}{\partial y_i\partial y_j}\bigg)dt
+\\&=\int_0^\infty\frac{\partial G}{\partial t}dt \text{ using (\ref{Geq})}
+\\&=G({\mb y},\infty)-G({\mb y},0)
+\\&=-1
+\end{align*}
+Finally, this gives us a PDE for the expected hitting time of the boundary of the region $R$:
+\begin{equation}
+\sum_{i=1}^NA_i({\mb y})\frac{\partial f}{\partial y_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y}){\mb B}^T({\mb y})]_{ij}\frac{\partial^2 f}{\partial y_i\partial y_j}=-1 \label{DT}
+\end{equation}
+with boundary conditions $f({\mb x})=0 \text{ for } {\mb x}\in\partial R$.
+
+\subsubsection{Error rate }
+%(section 6.6.2 The Fokker-Planck Equation in Several Dimensions, Distribution of Exit Points and section 5.5.4 Probability of Exit Through a Particular End of the Interval in Gardiner )
+Let ${\mb J}({\mb x},t|{\mb y},s):(\R^N\times\R)\times(\R^N\times\R)\to \R^N$ be such that 
+$$J_k({\mb x},t|{\mb y},s)=A_k({\mb x},t)p({\mb x},t|{\mb y},s)-\frac{1}{2}\sum_{l=1}^N\frac{\partial \big([{\mb B}({\mb x},t){\mb B}^T({\mb x},t)]_{kl}p({\mb x},t|{\mb y},s)\big)}{\partial x_j}.$$ 
+If $p$ satisfies the forward equation (\ref{forward}), then 
+\begin{equation}
+\frac{\partial p}{\partial t} =-\sum_{i=1}^N\frac{\partial \big(A_i({\mb x},t)p\big)}{\partial x_i}+\frac{1}{2}\sum_{i,j=1}^N\frac{\partial^2\big([{\mb B}({\mb x},t){\mb B}^T({\mb x},t)]_{ij}p\big)}{\partial x_i\partial x_j}=-\sum_{i=1}^N\frac{\partial J_i({\mb x},t|{\mb y},s)}{\partial x_i}. \label{jequals}
+\end{equation}
+
+\begin{claim}
+Each $J_k$  satisfies the backward equation.
+\end{claim}
+\begin{pf}
+{\tiny
+\begin{align*}
+\sum_{i=1}^NA_i({\mb y},s)\frac{\partial J_k({\mb x},t|{\mb y},s)}{\partial y_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y},s){\mb B}^T({\mb y},s)]_{ij}\frac{\partial^2 J_k({\mb x},t|{\mb y},s)}{\partial y_i\partial y_j}
+&=\sum_{i=1}^NA_i({\mb y},s)\bigg[A_k({\mb x},t)\frac{\partial p}{\partial y_i}-\frac{1}{2}\sum_{l=1}^N\frac{\partial \bigg([{\mb B}({\mb x},t){\mb B}^T({\mb x},t)]_{kl}\frac{\partial p({\mb x},t|{\mb y},s)}{\partial y_i}\bigg)}{\partial x_l}\bigg]
+\\&+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y},s){\mb B}^T({\mb y},s)]_{ij}\bigg[A_k({\mb x},t)\frac{\partial^2 p}{\partial y_i\partial y_j}-\frac{1}{2}\sum_{l=1}^N\frac{\partial \bigg([{\mb B}({\mb x},t){\mb B}^T({\mb x},t)]_{kl}\frac{\partial^2 p({\mb x},t|{\mb y},s)}{\partial y_iy_j}\bigg)}{\partial x_l}\bigg]
+\\&=A_k({\mb x},t)\bigg[\sum_{i=1}^NA_i({\mb y},s)\frac{\partial p}{\partial y_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y},s){\mb B}^T({\mb y},s)]_{ij}\frac{\partial^2 p}{\partial y_i\partial y_j}\bigg]
+\\&-\frac{1}{2}\sum_{l=1}^N\frac{\partial }{\partial x_l}\bigg([{\mb B}({\mb x},t){\mb B}^T({\mb x},t)]_{kl}\bigg[\sum_{i=1}^NA_i({\mb y},s)\frac{\partial p}{\partial y_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y},s){\mb B}^T({\mb y},s)]_{ij}\frac{\partial^2 p}{\partial y_i\partial y_j}\bigg)\bigg]
+\\&=A_k({\mb x},t)\bigg(-\frac{\partial p}{\partial s}\bigg)-\frac{1}{2}\sum_{l=1}^N\frac{\partial }{\partial x_l}\bigg(-[{\mb B}({\mb x},t){\mb B}^T({\mb x},t)]_{kl}\frac{\partial p}{\partial s}\bigg) \text{ using (\ref{backward})}
+\\&=-\frac{\partial }{\partial s}\bigg(A_k({\mb x},t)p({\mb x},t|{\mb y},s)-\frac{1}{2}\sum_{l=1}^N\frac{\partial \big([{\mb B}({\mb x},t){\mb B}^T({\mb x},t)]_{kl}p({\mb x},t|{\mb y},s)\big)}{\partial x_l}\bigg)
+\\&=-\frac{\partial J_k}{\partial s}.
+\end{align*}
+}
+\end{pf}
+
+
+It follows that any linear combination $q({\mb x},t|{\mb y},s)=\sum_{k=1}^Nc_kJ_k({\mb x},t|{\mb y},s)$ also satisfies the backward equation:
+\begin{equation}
+-\frac{\partial q}{\partial s}=\sum_{i=1}^NA_i({\mb y},s)\frac{\partial q}{\partial y_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb y},s){\mb B}^T({\mb y},s)]_{ij}\frac{\partial ^2 q}{\partial y_i\partial y_j}. \label{jbackeq}
+\end{equation}
+
+\begin{claim} \label{probcurrent}
+If $S_{12}$ represents the boundary between two regions $R_2$ and $R_2$, then the net flow of probability from $R_2$ to $R_1$ can be written as $\int_{S_{12}} dS {\mb n}\cdot {\mb J}({\mb x},t) $ where ${\mb n}$ is a normal vector from $R_2$ to $R_1$.  
+\end{claim}
+
+\begin{pf}
+Let $S_1$ be the part of the boundary of $R_1$ not shared with $R_2$ and $S_2$ be the part of the boundary of $R_2$ not shared with $R_1$ so that  $\partial R_1=S_1\cup S_{12}$, $R_2=S_2\cup S_{12}$, and $S_1\cap S_{12}=S_2\cap S_{12}=\emptyset$. The probability of crossing from $R_2$ to $R_1$ across $S_{12}$ in the interval of time $[t,t+dt)$ is 
+\begin{align*}
+\int_{R_1}d{\mb x}\int_{R_2}d{\mb y} p({\mb x},t+dt|{\mb y},t).
+\end{align*}
+
+
+
+The probability of crossing from $R_1$ to $R_2$ across $S_{12}$  in the interval of time $[t,t+dt)$ can be found analogously so the net flow $F$ from $R_2$ to $R_1$ at time $t$ is 
+\begin{align*}
+F=\lim_{dt \to 0}\frac{1}{dt}\int_{R_1}d{\mb x}\int_{R_2}d{\mb y} \big(p({\mb x},t+dt|{\mb y},t)-p({\mb y},t+dt|{\mb x},t)\big).
+\end{align*}
+Since $p({\mb x},t|{\mb y},t)=p({\mb y},t|{\mb x},t)=0$ for ${\mb y}\in R_2$ and ${\mb x}\in R_1$,
+\begin{align*}
+F&=\lim_{dt \to 0}\frac{1}{dt}\int_{R_1}d{\mb x}\int_{R_2}d{\mb y} \big(p({\mb x},t+dt|{\mb y},t)-p({\mb x},t|{\mb y},t)-p({\mb y},t+dt|{\mb x},t)+p({\mb y},t|{\mb x},t)\big)
+\\&=\int_{R_1}d{\mb x}\int_{R_2}d{\mb y} \bigg(\frac{\partial p({\mb x},t'|{\mb y},t)}{\partial t'}\bigg|_{t'=t}-\frac{\partial p({\mb y},t'|{\mb x},t)}{\partial t'}\bigg|_{t'=t}\bigg)
+\\&=\int_{R_1}d{\mb x}\int_{R_2}d{\mb y}\bigg(-\sum_{i=1}^N\frac{\partial J_i({\mb x},t|{\mb y},t)}{\partial x_i}+\sum_{i=1}^N\frac{\partial J_i({\mb y},t|{\mb x},t)}{\partial y_i}\bigg) \text{using (\ref{jequals})}
+\\&=\int_{R_1}d{\mb x}\int_{R_2}d{\mb y}\sum_{i=1}^N\frac{\partial J_i({\mb y},t|{\mb x},t)}{\partial y_i}-\int_{R_2}d{\mb y}\int_{R_1}d{\mb x}\sum_{i=1}^N\frac{\partial J_i({\mb x},t|{\mb y},t)}{\partial x_i}
+\\&=\int_{R_1}d{\mb x}\bigg[\int_{S_2}dS {\mb n_2}\cdot {\mb J}({\mb y},t|{\mb x},t)+\int_{S_{12}}dS {\mb n_2}\cdot {\mb J}({\mb y},t|{\mb x},t)\bigg]-\int_{R_2}d{\mb y}\bigg[\int_{S_1}dS{\mb n}_1\cdot{\mb J}({\mb x},t|{\mb y},t)+\int_{S_{12}}dS{\mb n}_1\cdot{\mb J}({\mb x},t|{\mb y},t)\bigg]
+\\ &\text{ where ${\mb n}_2$ is a normal pointing out of $R_2$ and similarly for ${\mb n}_1$, by the divergence theorem}
+\end{align*}
+For ${\mb y}\in S_2$ and ${\mb x}\in R_1$, $J({\mb y},t|{\mb x},t)=0$. Similarly, for ${\mb x}\in S_1$ and ${\mb y}\in R_2$, ${\mb J}({\mb x},t|{\mb y},t)=0$.  Therefore, the integrals over $S_2$ and $S_1$ disappear and $F$ simplifies to
+\begin{align*}
+F&=\int_{R_1}d{\mb x}\bigg[\int_{S_{12}}dS {\mb n_2}\cdot {\mb J}({\mb y},t|{\mb x},t)\bigg]-\int_{R_2}d{\mb y}\bigg[\int_{S_{12}}dS{\mb n}_1\cdot{\mb J}({\mb x},t|{\mb y},t)\bigg]
+\\&=\int_{S_{12}}dS\bigg[\int_{R_1}d{\mb y}\ {\mb n}\cdot \mb{J}({\mb x},t|{\mb y},t)+\int_{R_2}d{\mb y}\ {\mb n}\cdot {\mb J}({\mb x},t|{\mb y},t)\bigg]
+\\ & \text{ where ${\mb n}$ is a normal pointing from $R_2$ to $R_1$}
+\\&=\int_{S_{12}}dS\bigg[\int_{R_1\cup R_2}d{\mb y}\ {\mb n}\cdot \mb{J}({\mb x},t|{\mb y},t)\bigg]
+\\&=\int_{S_{12}}dS\ {\mb n}\cdot {\mb J}({\mb x},t) \text{ since ${\mb x}\in S_{12}\subset R_1\cup R_2$}
+\end{align*}
+\end{pf}
+
+Now consider a region $R$ with boundary $S$.  Let $g({\mb a},{\mb x},t)|d{\mb S}({\mb a})|$ be the probability of exiting through an element $d{\mb S}({\mb a})$ of the boundary $S$ after time $t$.
+
+\begin{claim}
+If the system is time homogeneous, 
+\begin{equation}
+\frac{\partial g}{\partial t}=\sum_{i=1}^NA_i({\mb x})\frac{\partial g}{\partial x_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb x}){\mb B}^T({\mb x})]_{ij}\frac{\partial ^2 g}{\partial x_i\partial x_j}. \label{geq}
+\end{equation}
+\end{claim}
+
+\begin{pf}
+By the definition of $g$,
+{\tiny
+%% Gardiner has a negative sign in the following but I don't know why and it seems to work out just fine without it?
+\begin{align*}
+g({\mb a},{\mb x},t)|d{\mb S}({\mb a})|&=\int_t^\infty dt' {\mb J}({\mb a},t'|{\mb x},0)\cdot d{\mb S}(\mb{a}) \text{using Claim \ref{probcurrent}}
+\\&=\int_t^\infty dt' {\mb J}({\mb a},0|{\mb x},-t')\cdot d{\mb S}(\mb{a})
+\\&=\int_{-\infty}^{-t}dt' {\mb J}({\mb a},0|{\mb x},t')\cdot d{\mb S}(\mb{a}) \text{ using integration by substitution}
+\\ \text{ so that }  \sum_{i=1}^NA_i({\mb x})\frac{\partial g}{\partial x_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb x}){\mb B}^T({\mb x})]_{ij}\frac{\partial ^2 g}{\partial x_i\partial x_j}
+&=\int_{-\infty}^{-t} dt'\bigg(\sum_{i=1}^NA_i({\mb x})\frac{\partial ({\mb J}({\mb a},0|{\mb x},t')\cdot d{\mb S}({\mb a}))}{\partial x_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb x}){\mb B}^T({\mb x})]_{ij}\frac{\partial ^2 ({\mb J}({\mb a},0|{\mb x},t')\cdot d{\mb S}({\mb a}))}{\partial x_i\partial x_j}\bigg)
+\\&=\int_{-\infty}^{-t}dt' \bigg(-\frac{\partial ({\mb J}({\mb a},0|{\mb x},t')\cdot d{\mb S}({\mb a}))}{\partial t'}\bigg) \text{ using (\ref{jbackeq})}
+\\&=\big(-{\mb J}({\mb a},0|{\mb x},t')\cdot d{\mb S}({\mb a})\big)\bigg|_{-\infty}^{-t}
+\\&=\big(-{\mb J}({\mb a},-t'|{\mb x},0)\cdot d{\mb S}({\mb a})\big)\bigg|_{-\infty}^{-t}
+\\&=-{\mb J}({\mb a},t|{\mb x},0)\cdot d{\mb S}({\mb a})\
+\\&=\frac{\partial g}{\partial t}
+\end{align*}
+}
+\end{pf}
+
+We are interested in finding the total probability of exiting through $d{\mb S}({\mb a})$, $h({\mb a},{\mb x})=g({\mb a},{\mb x},0)$.  If we let $t\to 0$ in (\ref{geq}) and notice that ${\mb J}({\mb a},0|{\mb x},0)=\delta(|{\mb a}-{\mb x}|)$, we find that 
+\begin{equation*}
+\sum_{i=1}^NA_i({\mb x})\frac{\partial h}{\partial x_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb x}){\mb B}^T({\mb x})]_{ij}\frac{\partial ^2 h}{\partial x_i\partial x_j}=0
+\end{equation*}
+with boundary conditions $h({\mb a},{\mb x})=\delta(|{\mb a}-{\mb x}|)$ for ${\mb x}$ in $S$. To find the total probability of exiting through a section $S'\subset S$, $H(S',{\mb x})$, we can simply integrate the solutions $h({\mb a},{\mb x})$ for ${\mb a}\in S'$ to find 
+\begin{equation}
+\sum_{i=1}^NA_i({\mb x})\frac{\partial H}{\partial x_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb x}){\mb B}^T({\mb x})]_{ij}\frac{\partial ^2 H}{\partial x_i\partial x_j}=0 \label{ER}
+\end{equation}
+with boundary conditions $H(S',{\mb x})=\delta({\mb x}\in S')$ for ${\mb x}\in S$.
+
+
+
+%We can also consider the expected exit time, given that the particle exits through $d{\mb S}({\mb a})$, $T({\mb a},{\mb x})$:
+%
+%\begin{align*}
+%T({\mb a},{\mb x})&=\int_0^\infty t P(\text{ exit in }[t,t+dt)|\text{ exit through }d{\mb S}({\mb a}))
+%\\&=\int_0^\infty t\frac{P(\text{ exit through }d{\mb S}({\mb a}) \text{ in }[t,t+dt))}{P(\text{ exit through } d{\mb S}({\mb a}))}
+%\\&=\frac{1}{{P(\text{ exit through } d{\mb S}({\mb a}))}}\int_0^\infty t P(\text{ exit through }d{\mb S}({\mb a}) \text{ in }[t,t+dt))
+%\\&=\frac{1}{h({\mb a},{\mb x})}\int_0^\infty t\bigg(g({\mb a},{\mb x},t)-g({\mb a},{\mb x},t+dt)\bigg)
+%\\&=\frac{1}{h({\mb a},{\mb x})}\int_0^\infty- t\frac{\partial g}{\partial t}dt
+%\\&=-\frac{1}{h({\mb a},{\mb x})}\bigg([tg({\mb a},{\mb x},t)]_0^\infty-\int_0^\infty g({\mb a},{\mb x},t)dt\bigg) \text{ by integration by parts}
+%\\&=\frac{1}{h({\mb a},{\mb x})}\int_0^\infty g({\mb a},{\mb x},t)dt \text{ if }\lim_{t\to\infty} g({\mb a},{\mb x},t)=0 \text{ quickly enough}
+%\\\text{so that }T({\mb a},{\mb x})h({\mb a},{\mb x})&=\int_0^\infty g({\mb a},{\mb x},t)dt
+%\end{align*}
+%If we integrate (\ref{geq}) from $0$ to $\infty$ we find that 
+%\begin{align*}
+%-h({\mb a},{\mb x})=-g({\mb a},{\mb x},0)=\sum_{i=1}^NA_i({\mb x})\frac{\partial (Th)}{\partial x_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb x}){\mb B}^T({\mb x})]_{ij}\frac{\partial^2(Th)}{\partial x_i\partial x_j}.
+%\end{align*}
+
+
+\subsubsection{Our model }
+We will introduce the operator ${\mb L}$ such that 
+\begin{equation}
+{\mb L}(f)=\sum_{i=1}^NA_i({\mb x})\frac{\partial f}{\partial x_i}+\frac{1}{2}\sum_{i,j=1}^N[{\mb B}({\mb x}){\mb B}^T({\mb x})]_{ij}\frac{\partial ^2 f}{\partial x_i\partial x_j}. \label{operator}
+\end{equation}
+Then the expected time to hit the boundary $S$ satisfies ${\mb L}f=-1$ with boundary conditions $f({\mb x})=0$ for ${\mb x}\in S$ and the probability of hitting a subset $S'\subset S$ satisfies ${\mb L}H=0$ with boundary conditions $H({\mb x})=\delta({\mb x}\in S')$ for ${\mb x}\in S$.
+The stochastic differential equations in our model are
+\begin{equation}
+\begin{array}{ll}
+dX_1&=\bigg(-\ell X_1(t)+br(2c-1)\bigg)dt+\bigg(b\sqrt{rc}\bigg)dW_\text{L}t-\bigg(b\sqrt{r(1-c)}\bigg)dW_\text{R}t
+\\dX_2&=\bigg(-\ell X_2(t)-br(2c-1)\bigg)dt-\bigg(b\sqrt{rc}\bigg)dW_\text{L}t+\bigg(b\sqrt{r(1-c)}\bigg)dW_\text{R}t.
+\end{array}
+\end{equation}
+
+This gives 
+\begin{equation}
+{\mb A}({\mb x},t)=\left(\begin{array}{ll} 
+-\ell x_1+br(2c-1)
+\\ -\ell x_2-br(2c-1)
+\end{array}\right), \text{ and }
+\end{equation}
+
+\begin{equation}
+{\mb B}({\mb x},t)=\left(\begin{array}{ll} 
+b\sqrt{rc} & -b\sqrt{r(1-c)}
+\\ -b\sqrt{rc} & b\sqrt{r(1-c)}
+\end{array}\right), \text{ so that }
+\end{equation}
+
+\begin{equation}
+{\mb B}({\mb x},t){\mb B}^T({\mb x},t)
+=\left(\begin{array}{ll}
+b^2r & b^2r
+\\ b^2r & b^2r
+\end{array}\right)
+\end{equation}
+
+Thus, the operator ${\mb L}$ is given by
+
+\begin{align}
+%\begin{array}{ll}
+{\mb L}(f)&=(-\ell x_1+br(2c-1))\frac{\partial f}{\partial x_1}+(-\ell x_2-br(2c-1))\frac{\partial f}{\partial x_2}+\frac{1}{2}b^2r\frac{\partial^2 f}{\partial x_1^2}+\frac{1}{2}b^2r\frac{\partial^2 f}{\partial x_1\partial x_2}+\frac{1}{2}b^2r\frac{\partial^2 f}{\partial x_2\partial x_1}+\frac{1}{2}b^2r\frac{\partial^2 f}{\partial x_2^2} \notag
+\\&=(-\ell x_1+br(2c-1))\frac{\partial f}{\partial x_1}+(-\ell x_2-br(2c-1))\frac{\partial f}{\partial x_2}+b^2r\bigg(\frac{1}{2}\frac{\partial^2 f}{\partial x_1^2}+\frac{\partial^2 f}{\partial x_1\partial x_2}+\frac{1}{2}\frac{\partial^2 f}{\partial x_2^2} \bigg)
+%\end{array}
+\end{align}
+
+The region we are interested in is the one in which both individuals' opinions $(x_1,x_2)$ are greater than or equal to their respective thresholds, i.e. $R=\{(x_1,x_2): x_1\geq -T_1 \text{ and } x_2\geq -T_2\}$ so that $S=\partial R=\{(x_1,-T_2): x_1>-T_1\}\cup\{(-T_1,x_2):x_2>-T_2\}$.  The subset of the boundary we are interested in is the one that indicates a correct decision has been made, i.e. $x_2=-T_2$, so that $S'=\{(x_1,-T_2):x_1>-T_1\}$. The expected decision time is the expected hitting time of $S$. The probability of a correct decision is the probability of exiting $R$ through $S'$. The first component prefers that the second component reaches its threshold first, so the probability of reaching its decision preference is the same as the probability of a correct decision. The probability of reaching the decision preference of the second component is $1$ minus that probability.
+
+There are analytical solutions to these equations when the system of SDEs is reduced to one dimension. However, we were not able to find an analytical solution for the full two-dimensional system and we therefore used numerical methods to solve the PDEs in this case. In order to  numerically solve the PDEs for decision time and error rate, we artificially close the region $R$ so that we can impose boundary conditions on a finite subset of the plane. In order to this, we pick two upper bounds $B_1$ and $B_2$ and restrict $R$ to $$R_2=\{(x_1,x_2): x_1\in [-T_1,B_1] \text{ and } x_2\in[ -T_2,B_2]\},$$ with boundary $S_2$. The subset of the boundary we are interested in becomes 
+$$S'_2=\{(x_1,-T_2):x_1\in [-T_1,B_1]\}\cup\{(B_1,x_2):x_2\in [-T_2,B_2]\}$$
+The boundary condition $f({\mb x})=0$ for ${\mb x}\in S$ becomes $f({\mb x})=0$ for ${\mb x}\in S_2$ and the condition $H({\mb x})=\delta({\mb x}\in S')$ for ${\mb x}\in S$ becomes $H({\mb x})=\delta({\mb x}\in S'_2)$ for ${\mb x}\in S_2$.
+
+\subsection{Initial conditions of the SDEs } 
+In our analyses, we assumed that both decision variables start at $0$, i.e. $X_1(0)=X_2(0)=0$.  If one component had previous knowledge of the other component, they might start with a different initial condition that reflects this knowledge. For instance, if a component has previous information that the other component has a higher fighting ability, it might start with its decision variable below $0$ and conversely if it has information that the other component has a lower fighting ability. Initial conditions away from $(0,0)$ are biased toward the correct decision if $c>.5$ and $X_1(0)>X_2(0)$ and toward the wrong decision if $c>.5$ and $X_1(0)<X_2(0)$ (and conversely for $c<.5)$. It is possible that, in our model system, one animal can have gained information about another before ever encountering it in a fight, which might influence its initial conditions. However, incorporating this information into our model would require additional assumptions about how observations are incorporated into the decision variables, so, for simplicity, we assume that both decisions variables start at $0$.
+
+If we \emph{were} to consider biased initial conditions, they would not strongly affect our model. With the constraint that the decision thresholds are equal, $T_1=T_2$, for a given difficulty $c$, error rate is a well-defined function of decision time (Figure \ref{dimensionality}). When there is no bias in the initial conditions or bias toward the wrong decision, error rate is a strictly decreasing function of decision time: the longer the components wait to make a decision, the more evidence they can accumulate and the more likely they are to reach the correct decision (Figure \ref{dimensionality}). The difference between these two scenarios is that, if the components start with bias toward the wrong decision, for a given decision time they have a higher error rate. The situation is slightly different if the initial conditions are biased toward the correct decision.  In this case, if both components set their thresholds low, they will reach the correct answer quickly since they are already close to doing so. As they increase their thresholds, they increase their decision time and increase the probability of reaching of moving away from the correct decision toward the wrong decision. As they increase their thresholds further, than the increase in decision time allows them to reach the correct decision with a higher probability again.  This hump-shaped response of error rate to decision time can be seen in Figure \ref{dimensionality}. The tradeoffs between error rate and decision time affect the absolute value of the Nash equilibrium thresholds, so that with different biases in the initial conditions, we would expect different Nash thresholds. However, we expect their response to the optimization weights to be similar regardless of initial conditions: Nash thresholds should increase when decision preference is more important and decrease when decision time is more important.
+
+%\appendix[Nash equilibrium]  
+\subsection{Nash equilibrium}
+The Nash equilibrium strategies is those such that no component has an incentive to changes it threshold to improve its utility. The thresholds we allow in our model are $0.5,0.6,\dots,1.9,2$. To find the Nash thresholds, we assign all individuals in a group the highest possible strategy (although the procedure is robust to this choice of initial conditions). Each component in turn then chooses among the possible thresholds the threshold that would give it the best utility, given the thresholds that the other components are using, until the components equilibrate on a set of Nash thresholds. If the Nash thresholds are $\{T_i\}$, there may be a set of thresholds $\{T_i'\}$ such that some components' utilities are better when the group uses the second set. However, no single individual has an incentive to change its strategy from $T_i$ to $T_i'$, and when the group uses the thresholds $\{T_i'\}$, at least one component will have an incentive to change its strategy. This sub-optimality is highlighted by our result that low-valued components would do better if all components raised their thresholds, even though no individual component has an incentive to raise its threshold. Our result agrees with previous findings that evolutionary dynamics of strategies for gathering social information can lead to a population using suboptimal strategies \cite{Torney:2015fk}.  By assuming that the components use Nash strategies, we are able to analyze the effects of the optimization weights, but we did not address the interesting question of how those strategies might be reached. Finding the appropriate timescale separation between the dynamics of how strategies are learned and the decision dynamics and the consequences of this additional level of learning are left for future work. 
+
+\subsection{Calculation of mutual information }
+
+To evaluate the performance of each of our measures of consensus, we find the mutual information between scores given by each measure and underlying values or abilities.  As explained in the main text and illustrated in Supplemental Figure \ref{cartoon}, to generate a signaling network, we first draw a set of $N$ values $\{a_1,\dots,a_N\}$ from a uniform distribution. Then we find the Nash thresholds $\{T_1,\dots,T_N\}$ and then we find the expected decision times and probabilities of the decision outcomes for each pair of individuals. We then form an edge between each pair according to these probabilities, with a weight that depends on the decision time.  Once we have this signaling network, we apply each of our four consensus measures to it, generating consensus scores $\{s_1,\dots,s_N\}$.  To measure how well each measure performs, we find the mutual information between the consensus scores and the values. The mutual information between two random variables $X$ and $Y$ is 
+\begin{equation}
+I(X,Y)=\int_{y}\int_{x}p(x,y)\log\left(\frac{p(x,y)}{p(x)p(y)}\right)
+\end{equation}
+where $p(x,y)$ is the joint probability of $X$ and $Y$ and $p(x)$ and $p(y)$ are the marginal probabilities of $X$ and $Y$ respectively. For us, this becomes,
+\begin{equation}
+I(\{a_i\},\{s_i\})=\int_{\{a_i\}\in[0,1]^N}\int_{\{s_i\}\in\R^N}p(\{a_i\},\{s_i\})\log\left(\frac{p(\{a_i\},\{s_i\})}{p(\{a_i\})p(\{s_i\})}\right).
+\end{equation}
+If a measure produces consensus scores such that the mutual information between the scores and the values is high, then knowing the consensus scores of the components in the system tells us (and possibly the components themselves) about the underlying values.  However, calculating the mutual information requires many more samples than are computationally feasible.  To reduce the number of states whose probabilities we want to evaluate, we discretize both the values and the scores.  Rather than trying to use the full set of consensus scores to infer the values, this is more like using the order of the consensus scores to infer the order of the values. Specifically, given a set of values $\{a_1,\dots,a_N\}$, we bin them into $10$ bins and assign each component a new value $a_i'\in\{1,\dots,10\}$ corresponding to the bin in which its value falls.  Similarly, given a set of consensus score $\{s_1,\dots,s_N\}$, we bin them into $10$ bins and assign each component a new score $s_i'\in\{1,\dots,10\}$ corresponding to the bin in which its score falls.  The mutual information between the discretized values and scores is
+\begin{equation}
+I(\{a_i'\},\{s_i'\})=\sum_{\{a_i'\}\in\{1,\dots,10\}^N}\sum_{\{s_i'\}\in\{1,\dots,10\}^N}p(\{a_i'\},\{s_i'\})\log\left(\frac{p(\{a_i'\},\{s_i'\})}{p(\{a_i'\})p(\{s_i'\})}\right).
+\end{equation}
+
+\subsection{Explanation for most informative measures of consensus }
+
+Which measure is the most informative about the individuals' true values depends on how accurately pairwise decisions tend to be and what kind of errors are most frequent. When decisions are quite accurate ($w_2<.4$), the finer measures of consensus---weighted in-degree and eigenvector centrality---can use all of the information in the decision network to make fine distinctions between individuals, leading to consensus scores that are more informative than those from the coarser measures---in-degree and entropy.  Whether weighted in-degree or eigenvector centrality is more informative depends on what type of error is common. When there are no waiting costs ($w_2=0$) and the individuals value their personal preferences over accuracy ($w_1<.8$), low valued individuals can sometimes wait out higher valued individuals leading to an incorrect  decision being made in favor of a low individual at the expense of a high individual. Since eigenvector centrality takes the identity of the source of decisions into account, it will incorrectly assign the low individual a high score, whereas weighted in-degree will ignore the source and assign the low individual an appropriately low score.  Therefore, in these circumstances, weighted in-degree is more informative. When accuracy matters ($w_1\geq .8$, $w_2=0$) or when there are low non-zero waiting costs ($0<w_2\leq .3$) low value individual are less likely to wait out high value individuals, but there are a moderate amount of mistakes between pairs of individuals in the middle and bottom of the group. Consider two middle value individuals, with $A$ having slightly higher value than $B$. Another individual might make a mistake with respect to $B$ so that weighted in-degree gives $B$ a slightly higher score than $A$. But $A$ and $B$ will mostly decide correctly so that, despite errors, $B$ will tend to send more decisions than $A$. Since eigenvector centrality is affected by the decisions sent as well as received, it will correctly give $A$ a higher score. Therefore, in these circumstances, eigenvector centrality is the most informative. As waiting costs increase ($.4 \leq w_2 \leq .5$) and decisions become even less accurate, even the high value individuals start to make mistakes. Now consider two high value individuals, with $A$ having slight higher value than $B$. If $A$ errs and decides strongly in favor of a lower value individual, eigenvector centrality will give $A$ a lower score because of those sent decisions and weighted in-degree will give $A$ a lower score because of the decisions it has prevented itself from receiving. However, $A$ is likely to make at most one more mistake than $B$ so that the number of individuals deciding in favor of either will be the same. Thus the coarseness of unweighted in-degree becomes an advantage by allowing it to group high value individuals together when finer measures would make incorrect fine distinctions. When decisions are even less accurate ($.5<w_2<.7$), weighted in-degree, unweighted in-degree, and eigenvector centrality can all get confused by incorrect decisions between any pair of individuals. What becomes especially difficult is distinguishing between low value individuals, one of whom might incorrectly receive decisions from higher individuals. If a low value individual receives correct decisions, they will be of similar strengths from even lower individuals. However, if it receives decisions from a higher individual, even though its score from any of the other measures will be increased, entropy decreases its score because of the difference in the strengths of signals coming from different types of individuals. In these circumstances, entropy does well at measuring the lack of consensus of decisions with respect of low individuals. When decisions are very inaccurate ($w_2>.6$), weighted in-degree becomes the most reliable.
+ 
+ 
+% \appendix[Skewness of DSP]
+\subsection{Explanation of skewness being maximized at intermediate waiting costs}
+When waiting costs are low and accuracy is high, the decisions accurately represent the individuals' true  abilities, so the distribution of number of signalers accurately represents the distribution of abilities, which is not very right-skewed.  When waiting costs are high, decisions are so noisy that all individuals receive a similar number of decisions, giving a distribution that is quite uniform and not right-skewed.  At intermediate waiting costs, the decisions between individuals with low to middle abilities are very noisy, so that the individuals in the bottom and middle of the group receive a similar number of signals, but all individuals make accurate decisions with the top few individuals, which gives them high scores and results in a right-skewed distribution.
+
+
+%\pagebreak
+%\nocite{*}
+\bibliographystyle{plain}
+\bibliography{signaling_model}
+
+%\pagebreak
+\subsection{Supplemental Figures }
+
+
+\begin{figure}[bp]
+\includegraphics[width=6.83in]{cartoon_cropped.pdf}
+\caption{\label{cartoon} Schematic of the model. 1. First, each individual's value is drawn from a uniform distribution. 2. The difficulty of each pairwise decision increases with the similarity of values, so that $c_{ij}$ increases as $|a_i-a_j|$ increases. 3. Given these difficulties, each individual has a Nash threshold strategy $T_i$. 4. Given the set of Nash thresholds, a pair will reach each decision with some probability and in an expected amount of time. 5. We draw the decisions according to the probabilities of the two possible outcomes and the strength of the decision decreases with increasing decision time. 6. For each decision network, we compute a set of consensus measures to give each individual a consensus score. We repeat this process for many random draws of values to find average Nash thresholds and the mutual information between the consensus scores and the values. }
+\end{figure}
+
+\begin{figure}[ht]
+\includegraphics[width=6.83in]{dimensionality_comparison.pdf}
+
+\caption{\label{dimensionality} The error rate is the same for the reduced one-dimensional model and the full two-dimensional model. Here we show the probability of a correct output as a function of the expected time to a decision, as the decision thresholds are varied, with the constraint that $T_1=T_2$. The red lines correspond to the reduced one-dimensional model and the dashed blue lines correspond to the full two-dimensional model. Decisions of different difficulties ($c$) are represented with lines of different intensity. In (a), both decision variables start at $0$. In (b), $X_1(0)=1$, $X_2(0)=0.1$. In (c), $X_1(0)=0.1$, $X_2(0)=1$.  (Parameters: $N=20$, $b=1$, $r=1$, $\ell=0.1$.}
+\end{figure}
+
+\begin{figure}[ht]
+\includegraphics[width=6.83in]{group_size.pdf}
+\caption{\label{groupsize} Our result that increasing the weight given to decision preference can improve the accuracy of decisions is insensitive to the size of the group.  In each panel, the weight given to decision preference, $w_3$, on the horizontal axis and average accuracy is on the vertical axis. In (a) we show the average accuracy of the whole group, and in (b) we show the average accuracy of decisions made by the bottom quartile. Each line corresponds to a different group size $N$. Parameters: $b=1$, $r=1$, $\ell=0.1$, $w_2=.1$, $w_1=1-w_3$.}
+\end{figure}
+
+\begin{figure}[ht]
+\includegraphics[width=3.4in]{mutinfo_vs_accuracy.pdf}
+\caption{\label{mutinfo_vs_acc} The average accuracy of all pairwise decisions changes as the optimization weights are changed. The mutual information of each consensus algorithm is an increasing function of this average accuracy.  This allows us to use average pairwise accuracy as a proxy for the overall information content of the decision network, regardless of the algorithm being used. Parameters: $N=20$, $b=1$, $r=1$, $\ell=0.1$. }
+\end{figure}
+
+\begin{figure}[ht]
+\includegraphics[width=6.83in]{skewness_histograms.pdf}
+\caption{\label{histograms} In (a), the color indicates the average skewness of the distribution of weighted in-degree for a group using Nash thresholds, as a function of the optimization weights, $w_1$, $w_2$, $w_3$. In the lower left corner of the simplex, only error rate matters ($w_1=1$).  In the upper corner, only decision time matters ($w_2=1$).  In the lower right corner, only preference matters ($w_3=1$).In (b)-(d) we show a histogram for a representative distribution of unweighted in-degree scores for a group using Nash thresholds. The optimization weights for each panel are indicated in the simplex with the corresponding letter.  Parameters: $w_1=0$, $w_2=0$, $w_3=1$ (c), $w_1=0$, $w_2=0.4$, $w_3=0.6$ (d), $w_1=0$, $w_2=0.6$, $w_3=0.4$ (e),  $N=20$, $b=1$, $r=1$, $\ell=0.1$.}
+\end{figure}
+
+\begin{figure}[ht]
+\includegraphics[width=6.83in]{multi_skewness.pdf}
+\caption{\label{supp_skewness} The skewness of the consensus scores is maximized at intermediate waiting costs for every consensus measure. In each panel, the color indicates the average skewness of the consensus scores of a group using Nash thresholds, as a function of the optimization weights, $w_1$, $w_2$, $w_3$. In the lower left corner of the simplex, only error rate matters ($w_1=1$).  In the upper corner, only decision time matters ($w_2=1$).  In the lower right corner, only preference matters ($w_3=1$). In (a) consensus is given by weighted in-degree, in (b) by entropy, and in (c) by eigenvector centrality. Parameters: $N=20$, $b=1$, $r=1$, $\ell=0.1$.} 
+\end{figure}
+
+%\begin{figure}[ht]
+%\includegraphics[width=3.4in]{skewness_max.pdf}
+%\caption{ }
+%\end{figure}
+
+
+\end{document}
+
+
